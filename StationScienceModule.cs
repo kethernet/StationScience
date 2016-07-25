@@ -31,6 +31,9 @@ namespace StationScience
         [KSPField]
         public string requiredTrait = "NA";
 
+        [KSPField]
+        public double experienceBonus = 0.5;
+
         public bool checkTrait()
         {
             if(requiredTrait == "" || requiredTrait == "NA")
@@ -74,6 +77,17 @@ namespace StationScience
                 }
                 else
                 {
+                    int nsci = 0;
+                    int nstars = 0;
+                    foreach (var crew in part.protoModuleCrew)
+                    {
+                        if (crew.experienceTrait.TypeName == requiredTrait)
+                        {
+                            nsci += 1;
+                            nstars += crew.experienceLevel;
+                        }
+                    }
+                    SetEfficiencyBonus((float)Math.Max(nsci + nstars * experienceBonus, 1.0));
                 }
             }
             base.PreProcessing();
