@@ -26,11 +26,10 @@ namespace StationScience
     {
         public static PartResource getResource(Part part, string name)
         {
-            PartResourceList resourceList = part.Resources;
-            return resourceList.list.Find(delegate(PartResource cur)
-            {
-                return (cur.resourceName == name);
-            });
+            //PartResourceList resourceList = part.Resources.;
+            //foreach
+            //return resourceList.dict.Values.First(res=>res.resourceName==name);
+            return part.Resources.Get(name);
         }
 
         public static double getResourceAmount(Part part, string name)
@@ -67,7 +66,7 @@ namespace StationScience
             else if (res != null && max <= 0)
             {
                 res.isVisible = false;
-                part.Resources.list.Remove(res);
+                part.Resources.Remove(res);
             }
             return res;
         }
@@ -90,19 +89,20 @@ namespace StationScience
             return ret;
         }
 
-        public static List<PartResource> getConnectedResources(Part part, string name)
+        /*public static double getConnectedResources(Part part, string name)
         {
-            var res_set = new List<PartResource>();
             var res_def = PartResourceLibrary.Instance.GetDefinition(name);
             if (res_def == null) return null;
-            part.GetConnectedResources(res_def.id, res_def.resourceFlowMode, res_set);
-            return res_set;
-        }
+            double resourceAmount=0;
+            double resourceMax=0;
+            part.GetConnectedResourceTotals(res_def.id, res_def.resourceFlowMode, out resourceAmount, out resourceMax);
+            return resourceAmount;
+        }*/
 
-        public static double getDemand(Part part, string name)
+        /*public static double getDemand(Part part, string name)
         {
             return sumDemand(getConnectedResources(part, name));
-        }
+        }*/
 
         private static double sumAvailable(IEnumerable<PartResource> list)
         {
@@ -115,7 +115,7 @@ namespace StationScience
             return ret;
         }
 
-        public static double getAvailable(Part part, string name)
+        /*public static double getAvailable(Part part, string name)
         {
             var res_set = new List<PartResource>();
             var res_def = PartResourceLibrary.Instance.GetDefinition(name);
@@ -123,9 +123,9 @@ namespace StationScience
             part.GetConnectedResources(res_def.id, res_def.resourceFlowMode, res_set);
             if (res_set == null) return 0;
             return sumAvailable(res_set);
-        }
+        }*/
 
-        public static double requestResourcePartial(Part part, string name, double amount)
+        /*public static double requestResourcePartial(Part part, string name, double amount)
         {
             if (amount > 0)
             {
@@ -161,6 +161,6 @@ namespace StationScience
             }
             else
                 return 0;
-        }
+        }*/
     }
 }

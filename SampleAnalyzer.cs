@@ -101,7 +101,7 @@ namespace StationScience
             }
             else
             {
-                sd.transmitValue = txValue;
+                sd.baseTransmitValue = txValue;
                 this.ReviewData();
             }
             this.updateList();
@@ -137,7 +137,7 @@ namespace StationScience
             var subject = ResearchAndDevelopment.GetSubjectByID(sd.subjectID);
             var parts = sd.subjectID.Split('@');
             var experiment = ResearchAndDevelopment.GetExperiment(parts[0]);
-            if (experiment != null && sd.transmitValue < txValue)
+            if (experiment != null && sd.baseTransmitValue < txValue)
             {
                 KSPEvent kspevent = new KSPEvent();
                 kspevent.active = true;
@@ -160,7 +160,7 @@ namespace StationScience
                 if (lightsMode == 1)
                 {
                     var kuarqs = getResource("Kuarqs");
-                    animActive = (kuarqs && kuarqs.maxAmount > 0 && kuarqs.amount < kuarqsRequired && kuarqs.amount > 0);
+                    animActive = (kuarqs!=null && kuarqs.maxAmount > 0 && kuarqs.amount < kuarqsRequired && kuarqs.amount > 0);
                 }
                 else if (lightsMode == 2) animActive = true;
                 else if (lightsMode == 0) animActive = false;
@@ -203,7 +203,7 @@ namespace StationScience
                 if (kuarqsRequired > 0)
                 {
                     var kuarqs = getResource("Kuarqs");
-                    if (kuarqs && kuarqs.maxAmount > 0 && kuarqs.amount < kuarqsRequired)
+                    if (kuarqs != null && kuarqs.maxAmount > 0 && kuarqs.amount < kuarqsRequired)
                     {
                         if (kuarqs.amount == 0)
                             status = "Ready to analyze.";
@@ -263,7 +263,7 @@ namespace StationScience
                         if (sdata != null && sdata.Length == 1)
                         {
                             var sd = sdata[0];
-                            sd.transmitValue = txValue;
+                            sd.baseTransmitValue = txValue;
                             ScreenMessages.PostScreenMessage("Analysis complete, and ready to transmit.", 6, ScreenMessageStyle.UPPER_CENTER);
                             setResourceMaxAmount("Kuarqs", 0);
                             Events["ReviewDataEvent"].guiActive = true;
@@ -272,7 +272,7 @@ namespace StationScience
                     if (kuarqHalflife > 0)
                     {
                         var kuarqs = getResource("Kuarqs");
-                        if (kuarqs && kuarqs.amount < (.99 * kuarqsRequired))
+                        if (kuarqs != null && kuarqs.amount < (.99 * kuarqsRequired))
                         {
                             double delta = TimeWarp.fixedDeltaTime;
                             double decay = Math.Pow(.5, delta / kuarqHalflife);

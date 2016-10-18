@@ -113,7 +113,7 @@ namespace StationScience
             PartResource eurekas = setResourceMaxAmount("Eurekas", eurekasRequired);
             PartResource kuarqs = setResourceMaxAmount("Kuarqs", kuarqsRequired);
             PartResource bioproducts = setResourceMaxAmount("Bioproducts", bioproductsRequired);
-            if (eurekas.amount == 0 && bioproducts) bioproducts.amount = 0;
+            if (eurekas.amount == 0 && bioproducts != null) bioproducts.amount = 0;
             Events["StartExperiment"].active = false;
             ScreenMessages.PostScreenMessage("Started experiment!", 6, ScreenMessageStyle.UPPER_CENTER);
         }
@@ -180,7 +180,7 @@ namespace StationScience
             if (kuarqHalflife > 0 && kuarqsRequired > 0)
             {
                 var kuarqs = getResource("Kuarqs");
-                if (kuarqs && kuarqs.amount < (.99 * kuarqsRequired))
+                if (kuarqs != null && kuarqs.amount < (.99 * kuarqsRequired))
                 {
                     double decay = Math.Pow(.5, TimeWarp.fixedDeltaTime / kuarqHalflife);
                     kuarqDecay = (float)((kuarqs.amount * (1 - decay)) / TimeWarp.fixedDeltaTime);
